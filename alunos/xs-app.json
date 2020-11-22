@@ -1,6 +1,12 @@
 {
   "authenticationMethod": "none",
   "routes": [
+     {
+      "authenticationType": "none",
+      "csrfProtection": false,
+      "source": "^/sap/opu/odata/sap/ZT55_50_OVLY_SRV/",
+      "destination": "ovly_public"
+    },
     {
       "source": "^(.*)$",
       "target": "$1",

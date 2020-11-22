@@ -19,7 +19,8 @@
                             labelFor="nome"/>
                         <Input 
                             id="nome"
-                            description=""/>
+                            description=""
+                            value="{/firstName}"/>
                     	<Label 
                             id="sobrenomeLabel"
 			                text="{i18n>sobrenome}"   		
@@ -27,28 +28,25 @@
                             labelFor="sobrenome"/>  
                         <Input 
                             id="sobrenome"
-                            placeholder=""/>                          
+                            placeholder=""
+                            value="{/lastName}"/>                          
                         <ndc:BarcodeScannerButton 
                             width="50%"
-                            busy="true"/>    
+                            busy="false"
+                            visible="false"/>    
                         <Panel
                             expandable="true"
                             expanded="false"
                             headerText="{i18n>panelText}">
                             <content>
-                                <List>
+                                <SearchField/>
+                                <List id="list" items="{/Students}">
                                     <items>
                                         <StandardListItem 
-                                            title="Savio"
-                                            description="Marques"
+                                            title="{FirstName}"
+                                            description="{LastName}"
                                             icon="sap-icon://customer"
                                             info="dd/mm/aaaa"
-                                        />
-                                        <StandardListItem 
-                                            title="Felix"
-                                            description="Marques"
-                                            icon="sap-icon://customer"
-                                            info="dd/mm/aaaa" 
                                         />
                                     </items>
                                 </List>
@@ -61,13 +59,15 @@
                                 <Button 
                                     text="Salvar"
                                     icon="sap-icon://save"
-                                    type="Accept"/>
+                                    type="Accept"
+                                    press="onPressSave"/>
                             </contentLeft>
                             
                             <contentMiddle>
                                 <Button 
                                     text="Limpar"
-                                    icon="sap-icon://reset"/>
+                                    icon="sap-icon://reset"
+                                    press="onPressClear"/>
          <!--                            type="Attention"/>  -->
                             </contentMiddle>
                             
@@ -75,7 +75,8 @@
                                 <Button 
                                     text="Deletar"
                                     icon="sap-icon://delete"
-                                    type="Reject"/>
+                                    type="Reject"
+                                    press="onPressDelete"/>
                             </contentRight>
 <!-- 
                             <Toolbar>

@@ -18,7 +18,7 @@
         "--ui5",
         "{\"version\":\".\"}"
       ],
-      "envFile": "${workspaceFolder}/alunos/.env3",
+      "envFile": "${workspaceFolder}/alunos/.env5",
       "preLaunchTask": "Build alunos"
     }
   ]
