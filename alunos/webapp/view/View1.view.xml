@@ -1,0 +1,97 @@
+<mvc:View 
+    controllerName="ovly.fiori50.alunos.controller.View1" 
+    xmlns:mvc="sap.ui.core.mvc"  
+    xmlns="sap.m"
+    xmlns:ndc="sap.ndc"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+	<Shell id="shell">
+		<App id="app">                      	
+			<pages>
+				<Page 
+                id="page" 
+                title="{i18n>title}">
+					<content>
+                    	<Label
+                            id="nomeLabel"
+			                text="{i18n>nome}"   		
+			                design="Standard" 
+                            labelFor="nome"/>
+                        <Input 
+                            id="nome"
+                            description=""/>
+                    	<Label 
+                            id="sobrenomeLabel"
+			                text="{i18n>sobrenome}"   		
+			                design="Standard" 
+                            labelFor="sobrenome"/>  
+                        <Input 
+                            id="sobrenome"
+                            placeholder=""/>                          
+                        <ndc:BarcodeScannerButton 
+                            width="50%"
+                            busy="true"/>    
+                        <Panel
+                            expandable="true"
+                            expanded="false"
+                            headerText="{i18n>panelText}">
+                            <content>
+                                <List>
+                                    <items>
+                                        <StandardListItem 
+                                            title="Savio"
+                                            description="Marques"
+                                            icon="sap-icon://customer"
+                                            info="dd/mm/aaaa"
+                                        />
+                                        <StandardListItem 
+                                            title="Felix"
+                                            description="Marques"
+                                            icon="sap-icon://customer"
+                                            info="dd/mm/aaaa" 
+                                        />
+                                    </items>
+                                </List>
+                            </content>
+                        </Panel>      
+                    </content>
+                    <footer>
+                        <Bar >
+                            <contentLeft>
+                                <Button 
+                                    text="Salvar"
+                                    icon="sap-icon://save"
+                                    type="Accept"/>
+                            </contentLeft>
+                            
+                            <contentMiddle>
+                                <Button 
+                                    text="Limpar"
+                                    icon="sap-icon://reset"/>
+         <!--                            type="Attention"/>  -->
+                            </contentMiddle>
+                            
+                            <contentRight>
+                                <Button 
+                                    text="Deletar"
+                                    icon="sap-icon://delete"
+                                    type="Reject"/>
+                            </contentRight>
+<!-- 
+                            <Toolbar>
+                                <content>
+                                    <Button text="Salvar" icon="sap-icon://save" />
+                                    <ToolbarSpacer />
+                                    <Button text="Limpar" icon="" />
+                                    <ToolbarSpacer />
+                                    <Button text="Deletar" icon="" />
+                                </content>
+                            </Toolbar> -->
+
+                        </Bar>
+                    </footer>
+				</Page>
+			</pages>                  
+		</App>
+	</Shell>
+</mvc:View>
