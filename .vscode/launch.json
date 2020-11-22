@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run alunos",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/alunos/node_modules/@sap/html5-repo-mock/index.js",
+      "cwd": "${workspaceFolder}/alunos",
+      "env": {
+        "PORT": "6004",
+        "MOCK_LOOKUP_DIRS": "[\"webapp\"]",
+        "run.config": "{\"handlerId\":\"ui5_flat_run_config_handler_id\",\"runnableId\":\"/home/user/projects_fiorifullstack/alunos\"}"
+      },
+      "args": [
+        "--standalone",
+        "/ovlyfiori50alunos/index.html",
+        "--ui5",
+        "{\"version\":\".\"}"
+      ],
+      "envFile": "${workspaceFolder}/alunos/.env3",
+      "preLaunchTask": "Build alunos"
+    }
+  ]
+}
