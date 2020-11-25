@@ -19,4 +19,4 @@ builder:
   - name: webide-extension-task-resources
     afterTask: webide-extension-task-updateManifestJson
     configuration:
-      nameSpace: ovly/fiori50
+      nameSpace: ovly/T55/fiori50

@@ -1,7 +1,7 @@
 {
   "_version": "1.12.0",
   "sap.app": {
-    "id": "ovly.fiori50.plantas",
+    "id": "ovly.T55.fiori50.plantas",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "title": "{{appTitle}}",
@@ -29,7 +29,7 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "sap-icon://task",
+      "icon": "sap-icon://detail-view",
       "favIcon": "",
       "phone": "",
       "phone@2": "",
@@ -44,7 +44,7 @@
   },
   "sap.ui5": {
     "rootView": {
-      "viewName": "ovly.fiori50.plantas.view.App",
+      "viewName": "ovly.T55.fiori50.plantas.view.App",
       "type": "XML",
       "async": true,
       "id": "app"
@@ -69,7 +69,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "ovly.fiori50.plantas.i18n.i18n"
+          "bundleName": "ovly.T55.fiori50.plantas.i18n.i18n"
         }
       },
       "": {
@@ -82,61 +82,49 @@
         }
       }
     },
-    "services": {
-      "ShellUIService": {
-        "factoryName": "sap.ushell.ui5service.ShellUIService",
-        "lazy": false,
-        "settings": {
-          "setTitle": "auto"
-        }
-      }
-    },
     "routing": {
       "config": {
-        "routerClass": "sap.m.routing.Router",
+        "routerClass": "sap.f.routing.Router",
         "viewType": "XML",
-        "viewPath": "ovly.fiori50.plantas.view",
-        "controlId": "app",
-        "controlAggregation": "pages",
+        "viewPath": "ovly.T55.fiori50.plantas.view",
+        "controlId": "layout",
+        "controlAggregation": "beginColumnPages",
         "bypassed": {
-          "target": [
-            "notFound"
-          ]
+          "target": "notFound"
         },
         "async": true
       },
       "routes": [
         {
           "pattern": "",
-          "name": "worklist",
-          "target": [
-            "worklist"
-          ]
+          "name": "master",
+          "target": "master"
         },
         {
-          "pattern": "Plantas/{objectId}",
+          "pattern": "CentroSet/{objectId}",
           "name": "object",
           "target": [
+            "master",
             "object"
           ]
         }
       ],
       "targets": {
-        "worklist": {
-          "viewName": "Worklist",
-          "viewId": "worklist",
+        "master": {
+          "viewName": "Master",
           "viewLevel": 1,
-          "title": "{i18n>worklistViewTitle}"
+          "viewId": "master"
         },
         "object": {
-          "viewName": "Object",
-          "viewId": "object",
-          "viewLevel": 2,
-          "title": "{i18n>objectViewTitle}"
+          "viewName": "Detail",
+          "viewId": "detail",
+          "viewLevel": 1,
+          "controlAggregation": "midColumnPages"
         },
-        "objectNotFound": {
-          "viewName": "ObjectNotFound",
-          "viewId": "objectNotFound"
+        "detailObjectNotFound": {
+          "viewName": "DetailObjectNotFound",
+          "viewId": "detailObjectNotFound",
+          "controlAggregation": "midColumnPages"
         },
         "notFound": {
           "viewName": "NotFound",
