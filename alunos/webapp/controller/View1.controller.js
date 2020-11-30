@@ -3,22 +3,28 @@ sap.ui.define([
        "sap/m/MessageToast",
        "sap/m/MessageBox",
        "sap/ui/model/json/JSONModel",
-       "sap/ui/model/odata/v2/ODataModel"
+       "sap/ui/model/odata/v2/ODataModel",
+	   "ovly/fiori50/alunos/model/formatter"
+
 	],
 	/**
   
      */
-	function (Controller, MessageToast, MessageBox, JSONModel, ODataModel) {
+	function (Controller, MessageToast, MessageBox, JSONModel, ODataModel, formatter) {
 		"use strict";
+
+
 
 		return Controller.extend("ovly.fiori50.alunos.controller.View1", {
             _oList: null,
             _oModel: null,
 
+            formatter: formatter,
+
             onInit: function(){
               this._oList = this.byId("list");
 
-             let oFonteDeDados = {
+             /*let oFonteDeDados = {
                     firstName: "Savio",
                     lastName: "Marques",
                     students: [
@@ -27,28 +33,32 @@ sap.ui.define([
                         {  firstName: "Ciclano",    lastName: "Carvalho"   }
                     ]
                 };
-
-              //  this._oModel = new JSONModel(oFonteDeDados);
-              //   this._oModel = new JSONModel("https://run.mocky.io/v3/aaf6c572-fa6b-49e9-9f03-aaa0fdeac9b8");
-                
+            
+                this._oModel = new JSONModel(oFonteDeDados);
+                 this._oModel = new JSONModel("https://run.mocky.io/v3/aaf6c572-fa6b-49e9-9f03-aaa0fdeac9b8");
+            */
+              
+            this.byId("nome").setModel(this._oModel);         
                this._oModel = new ODataModel("/sap/opu/odata/sap/ZT55_50_OVLY_SRV/");
                
-               //this.byId("nome").setModel(this._oModel);
-                this.getView().setModel(this._oModel);
+              this.getView().setModel(this._oModel);
             }, 
         
  
             onPressSave: function() {
-
-              let sNome = this.byId("nome").getValue();
-              let sSobrenome = this.byId("sobrenome").getValue();
-
+            /*
+              let sNome         = this.byId("nome").getValue();
+              let sSobrenome    = this.byId("sobrenome").getValue();
+              let sDtNascimento = this.byId("dtNascimento").getValue();
+              let sUsuario      = this.byId("usuario").getValue();
+            */
               // @ts-ignore
-              let oNewItem = new sap.m.StandardListItem({title: this.byId("nome").getValue(),
-                                                          description: this.byId("sobrenome").getValue(),
-                                                          icon: "sap-icon://customer",
-                                                          info: "dd/mm/aaaa" });
-                                                      
+              let oNewItem = new sap.m.StandardListItem({title: this.byId("nome").getValue() + 
+                                                                this.byId("sobrenome").getValue(),
+                                                         description: this.byId("dtNascimento").getValue(),
+                                                         icon: "sap-icon://customer",
+                                                         info: this.byId("usuario").getValue() });
+  
                this._oList.addItem(oNewItem);
 
 
@@ -59,10 +69,12 @@ sap.ui.define([
              onPressClear: function() {
                 let oInputNome = this.byId("nome");
                 let oInputSobrenome = this.byId("sobrenome");
-
-
                 oInputNome.setValue("");
                 oInputSobrenome.setValue("");
+
+                this.byId("dtNascimento").setValue("");
+                this.byId("usuario").setValue("");
+
                 MessageToast.show('Limpando');
             },
              onPressDelete: function() {

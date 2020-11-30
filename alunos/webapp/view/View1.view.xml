@@ -4,6 +4,7 @@
     xmlns="sap.m"
     xmlns:ndc="sap.ndc"
     xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
     displayBlock="true">
 	<Shell id="shell">
 		<App id="app">                      	
@@ -11,42 +12,89 @@
 				<Page 
                 id="page" 
                 title="{i18n>title}">
-					<content>
-                    	<Label
-                            id="nomeLabel"
-			                text="{i18n>nome}"   		
-			                design="Standard" 
-                            labelFor="nome"/>
-                        <Input 
-                            id="nome"
-                            description=""
-                            value="{/firstName}"/>
-                    	<Label 
-                            id="sobrenomeLabel"
-			                text="{i18n>sobrenome}"   		
-			                design="Standard" 
-                            labelFor="sobrenome"/>  
-                        <Input 
-                            id="sobrenome"
-                            placeholder=""
-                            value="{/lastName}"/>                          
-                        <ndc:BarcodeScannerButton 
-                            width="50%"
-                            busy="false"
-                            visible="false"/>    
+                <content>
+                    <f:SimpleForm
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        title="Address"
+                        labelSpanXL="3"
+                        labelSpanL="3"
+                        labelSpanM="3"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="4"
+                        emptySpanL="4"
+                        emptySpanM="4"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="false">  
+                        <f:content>
+                            <Label
+                                id="nomeLabel"
+                                text="{i18n>nome}"   		
+                                design="Standard" 
+                                labelFor="nome"/>
+                            <Input 
+                                id="nome"
+                                description=""
+                                value="{/firstName}"/>
+                            <Label 
+                                id="sobrenomeLabel"
+                                text="{i18n>sobrenome}"   		
+                                design="Standard" 
+                                labelFor="sobrenome"/>  
+                            <Input 
+                                id="sobrenome"
+                                placeholder=""
+                                value="{/lastName}"/>     
+                            <Label
+                                id="dtnascimentoLabel" 
+                                text="{i18n>dtnascimento}"   		
+                                design="Standard" 
+                                labelFor="dtnascimento"/>
+                           	<DatePicker
+			                    id="dtNascimento"
+			                    value="{/birthDate}" 
+                                displayFormat="short"
+			                    />
+                            <Label 
+                                id="usuarioLabel"
+                                text="{i18n>usuario}"   		
+                                design="Standard" 
+                                labelFor="usuario"/>  
+                            <Input 
+                                id="usuario"
+                                placeholder=""
+                                value="{/usuario}"/>                                   
+                            <ndc:BarcodeScannerButton 
+                                width="50%"
+                                busy="false"
+                                visible="false"/>  
+      					</f:content>  
+                    </f:SimpleForm>
+
                         <Panel
                             expandable="true"
                             expanded="false"
                             headerText="{i18n>panelText}">
                             <content>
                                 <SearchField/>
-                                <List id="list" items="{/Students}">
+                                <List 
+                                    id="list" 
+                                    items="{/Students}"
+                                	growing="true"
+		                            growingThreshold="10"
+		                            growingScrollToLoad="true">
                                     <items>
                                         <StandardListItem 
-                                            title="{FirstName}"
-                                            description="{LastName}"
+                                            title="{FirstName} {LastName}"
+                                            description="{
+                                                path: 'BirthDate',
+                                                formatter: '.formatter.date'}"
                                             icon="sap-icon://customer"
-                                            info="dd/mm/aaaa"
+                                            info="{UserName}"
                                         />
                                     </items>
                                 </List>
