@@ -4,48 +4,110 @@ sap.ui.define([
        "sap/m/MessageBox",
        "sap/ui/model/json/JSONModel",
        "sap/ui/model/odata/v2/ODataModel",
-	   "ovly/fiori50/alunos/model/formatter"
+       "ovly/fiori50/alunos/model/formatter",
+       "sap/ui/model/Filter",
+	   "sap/ui/model/FilterOperator"       
 
 	],
 	/**
   
      */
-	function (Controller, MessageToast, MessageBox, JSONModel, ODataModel, formatter) {
+	function (Controller, MessageToast, MessageBox, JSONModel, ODataModel, formatter, Filter, FilterOperator) {
 		"use strict";
 
 
 
 		return Controller.extend("ovly.fiori50.alunos.controller.View1", {
             _oList: null,
-            _oModel: null,
+            _oDataModel: null,
+            _oFormModel: null,
 
             formatter: formatter,
 
             onInit: function(){
-              this._oList = this.byId("list");
+                this._oList = this.byId("list");
 
-             /*let oFonteDeDados = {
-                    firstName: "Savio",
-                    lastName: "Marques",
-                    students: [
-                        {  firstName: "Fulano",     lastName: "Silva"   },
-                        {  firstName: "Beltrana",   lastName: "Santos"   },
-                        {  firstName: "Ciclano",    lastName: "Carvalho"   }
-                    ]
+                let oFonteDeDados = {
+                    primeiro_nome: "Savio",
+                    ultimo_nome: "Marques",
+                   // students: [
+                   //     {  firstName: "Fulano",     lastName: "Silva"   },
+                    //    {  firstName: "Beltrana",   lastName: "Santos"   },
+                    //    {  firstName: "Ciclano",    lastName: "Carvalho"   }
+                    //]
                 };
             
-                this._oModel = new JSONModel(oFonteDeDados);
-                 this._oModel = new JSONModel("https://run.mocky.io/v3/aaf6c572-fa6b-49e9-9f03-aaa0fdeac9b8");
-            */
-              
-            this.byId("nome").setModel(this._oModel);         
-               this._oModel = new ODataModel("/sap/opu/odata/sap/ZT55_50_OVLY_SRV/");
+                this._oFormModel = new JSONModel(oFonteDeDados);
+                this._oDataModel = new ODataModel("/sap/opu/odata/sap/ZT55_50_OVLY_SRV/", {
+                    useBatch: false
+                });
+
                
-              this.getView().setModel(this._oModel);
+                this.byId("detailform").setModel(this._oFormModel); 
+                this.getView().setModel(this._oDataModel);
+
             }, 
-        
- 
+            
+            toUpperCase: function(sFirstName){
+                if(!sFirstName){
+                    return "???????";
+                }
+                return sFirstName.toUpperCase();
+            },
+            
+            toFullName: function(sFirstName, sLastName) {
+                return  `${sFirstName.toUpperCase()} ${sLastName.toUpperCase()}`
+            },
+
+            onSearch: function (oEvent) {
+                // add filter for search
+                //var aFilters = [];
+                //var sQuery = oEvent.getSource().getValue();
+                //if (sQuery && sQuery.length > 0) {
+                //    var filter = new Filter("FirstName", FilterOperator.Contains, sQuery);
+                //    aFilters.push(filter);
+                //}
+
+                // update list binding
+                //var oList = this.byId("list");
+                //var oBinding = oList.getBinding("items");
+                //oBinding.filter(aFilters, "Application");
+            },
+
+
             onPressSave: function() {
+                let that = this;
+                
+                let sPath = "/Students";
+                let oData = {
+                    FirstName: this.byId("nome").getValue(),
+                    LastName: this._oFormModel.getProperty("/ultimo_nome")
+                };
+
+                const mParameters = {
+                    success: function(oStudent, oResponse) {
+                        let sId = oStudent.Id;
+                        MessageToast.show(`Aluno ${sId} criado com sucesso`);
+
+                        that.onPressClear();
+                    },
+
+                    error: this.onPressSaveError.bind(this)
+                    
+                }
+
+                this._oDataModel.create(sPath, oData, mParameters);
+            
+            },    
+            onPressSaveError: function(oError) {
+                let oResponseText = JSON.parse(oError.responseText);			            
+                let sMessage = oResponseText.error.message.value;                        
+
+                MessageBox.error(sMessage);   
+            
+            
+            },
+            onPressSaveOld: function() {
             /*
               let sNome         = this.byId("nome").getValue();
               let sSobrenome    = this.byId("sobrenome").getValue();
@@ -66,7 +128,19 @@ sap.ui.define([
                                                 width: "50%",
                                                 at: "CenterCenter"});
             },
-             onPressClear: function() {
+
+            onPressClear: function() {
+
+                this._oFormModel.setProperty("/primeiro_nome", "");
+                this._oFormModel.setProperty("/ultimo_nome", "");
+                //this._oFormModel.setData({
+                //     primeiro_nome: "",
+                //     ultimo_nome: ""
+                //});
+            },
+
+
+            onPressClearOld: function() {
                 let oInputNome = this.byId("nome");
                 let oInputSobrenome = this.byId("sobrenome");
                 oInputNome.setValue("");
@@ -77,12 +151,30 @@ sap.ui.define([
 
                 MessageToast.show('Limpando');
             },
-             onPressDelete: function() {
-                   
-     
-                this._oList.removeAllItems();
 
-                MessageBox.success('Deletado');
+
+            onPressDelete: function (oEvent) {
+                
+                var oItem = oEvent.getParameters().listItem;
+                var oContext = oItem.getBindingContext();
+                var oStudent = oContext.getObject();
+                var sPath = oContext.getPath(); //    /Students(1234)
+
+                function onSuccess(){
+
+                }
+
+                function onError(){
+
+                }
+                
+                var mParameters = {
+                    success: onSuccess.bind(this),
+                    error: onError.bind(this)
+                };
+
+                this._oDataModel.remove(sPath, mParameters);
+
 
             }
 		});

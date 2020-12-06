@@ -29,7 +29,8 @@
                         columnsXL="1"
                         columnsL="1"
                         columnsM="1"
-                        singleContainerFullSize="false">  
+                        singleContainerFullSize="false"
+                        id="detailform">  
                         <f:content>
                             <Label
                                 id="nomeLabel"
@@ -39,7 +40,7 @@
                             <Input 
                                 id="nome"
                                 description=""
-                                value="{/firstName}"/>
+                                value="{/primeiro_nome}"/>
                             <Label 
                                 id="sobrenomeLabel"
                                 text="{i18n>sobrenome}"   		
@@ -48,7 +49,7 @@
                             <Input 
                                 id="sobrenome"
                                 placeholder=""
-                                value="{/lastName}"/>     
+                                value="{/ultimo_nome}"/>     
                             <Label
                                 id="dtnascimentoLabel" 
                                 text="{i18n>dtnascimento}"   		
@@ -80,21 +81,57 @@
                             expanded="false"
                             headerText="{i18n>panelText}">
                             <content>
-                                <SearchField/>
+                                <SearchField 
+                                    liveChange=".onSearch"
+                                    search="onSearch" 
+                                    width="100%" />
                                 <List 
                                     id="list" 
-                                    items="{/Students}"
+                                    mode="Delete"
+                                    delete="onPressDelete"
+                                    items="{
+                                        path: '/Students',
+                                        length: 500,
+                                        sorter: {
+                                            path: 'FirstName',
+                                            descending: false
+                                        },
+                                        parameters: {
+                                            select: 'Id,FirstName,LastName,BirthDate'
+                                        }
+                                    }"
                                 	growing="true"
 		                            growingThreshold="10"
 		                            growingScrollToLoad="true">
                                     <items>
                                         <StandardListItem 
-                                            title="{FirstName} {LastName}"
+                                         
+                                           title="{
+                                               parts: [
+                                                    {
+                                                        path: 'FirstName'
+                                                    },
+                                                    {
+                                                        path: 'LastName'
+                                                    }                                               
+                                               ],
+                                               formatter: '.toFullName'
+                                            }"
                                             description="{
-                                                path: 'BirthDate',
-                                                formatter: '.formatter.date'}"
+                                                path:'BirthDate',
+                                                type: 'sap.ui.model.type.Date',
+                                                formatOptions: {
+                                                    style: 'short',
+                                                    relative: false,
+                                                    UTC: true
+                                                }
+                                            }"
+
+
+
                                             icon="sap-icon://customer"
-                                            info="{UserName}"
+                                            info="{
+                                                path: 'UserName'}"
                                         />
                                     </items>
                                 </List>
