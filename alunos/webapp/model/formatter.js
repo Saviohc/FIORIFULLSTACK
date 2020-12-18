@@ -16,7 +16,7 @@ sap.ui.define([
         
             if (oDate) { 
                 let oLocale = new sap.ui.core.Locale(sap.ui.getCore().getConfiguration().getLanguage())
-                let oFormat = sap.ui.core.format.DateFormat.getDateInstance({ style: "short" }, oLocale );
+                let oFormat = sap.ui.core.format.DateFormat.getDateInstance({ style: "short", UTC: true }, oLocale );
                 // @ts-ignore
                 let sDate = oFormat.format(oDate);
                 return sDate;

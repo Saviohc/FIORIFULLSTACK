@@ -33,6 +33,12 @@
                         id="detailform">  
                         <f:content>
                             <Label
+                                text="ID" 
+                                visible="{form>/isUpdate}"/>
+                            <Text 
+                                text="{form>/id}" 
+                                visible="{form>/isUpdate}"/>
+                            <Label
                                 id="nomeLabel"
                                 text="{i18n>nome}"   		
                                 design="Standard" 
@@ -40,7 +46,7 @@
                             <Input 
                                 id="nome"
                                 description=""
-                                value="{/primeiro_nome}"/>
+                                value="{form>/nome}"/>
                             <Label 
                                 id="sobrenomeLabel"
                                 text="{i18n>sobrenome}"   		
@@ -49,7 +55,7 @@
                             <Input 
                                 id="sobrenome"
                                 placeholder=""
-                                value="{/ultimo_nome}"/>     
+                                value="{form>/sobrenome}"/>     
                             <Label
                                 id="dtnascimentoLabel" 
                                 text="{i18n>dtnascimento}"   		
@@ -57,8 +63,16 @@
                                 labelFor="dtnascimento"/>
                            	<DatePicker
 			                    id="dtNascimento"
-			                    value="{/birthDate}" 
-                                displayFormat="short"
+			                    value="{
+                                                path:'form>/dtNascimento',
+                                                type: 'sap.ui.model.type.Date',
+                                                formatOptions: {
+                                                    style: 'short',
+                                                    relative: false,
+                                                    UTC: true
+                                                }
+                                        }"
+                                
 			                    />
                             <Label 
                                 id="usuarioLabel"
@@ -68,7 +82,22 @@
                             <Input 
                                 id="usuario"
                                 placeholder=""
-                                value="{/usuario}"/>                                   
+                                value="{form>/usuario}"/> 
+                            <Label 
+                                id="competenciaLabel"
+                                text="{i18n>competencia}"   		
+                                design="Standard" 
+                                labelFor="competencia"/>                                        
+                            <MultiComboBox 
+                                items = "{/Skills}"
+                                id    = "competencia">
+                                <items>
+                                    <core:Item 
+                                        xmlns:core="sap.ui.core" 
+                                        key="{Id}" 
+                                        text="{Name}"/>
+                                </items>
+                            </MultiComboBox>                                
                             <ndc:BarcodeScannerButton 
                                 width="50%"
                                 busy="false"
@@ -77,6 +106,7 @@
                     </f:SimpleForm>
 
                         <Panel
+
                             expandable="true"
                             expanded="false"
                             headerText="{i18n>panelText}">
@@ -87,25 +117,16 @@
                                     width="100%" />
                                 <List 
                                     id="list" 
-                                    mode="Delete"
-                                    delete="onPressDelete"
-                                    items="{
-                                        path: '/Students',
-                                        length: 500,
-                                        sorter: {
-                                            path: 'FirstName',
-                                            descending: false
-                                        },
-                                        parameters: {
-                                            select: 'Id,FirstName,LastName,BirthDate'
-                                        }
-                                    }"
+                                    mode="SingleSelectMaster"
+                                    enableBusyIndicator="true"
+                                    itemPress=".onPressItem"
+                                    items="{/Students}"
                                 	growing="true"
 		                            growingThreshold="10"
 		                            growingScrollToLoad="true">
                                     <items>
                                         <StandardListItem 
-                                         
+                                           type="Active"
                                            title="{
                                                parts: [
                                                     {
@@ -118,7 +139,7 @@
                                                formatter: '.toFullName'
                                             }"
                                             description="{
-                                                path:'BirthDate',
+                                                path: 'BirthDate',
                                                 type: 'sap.ui.model.type.Date',
                                                 formatOptions: {
                                                     style: 'short',
@@ -126,26 +147,38 @@
                                                     UTC: true
                                                 }
                                             }"
-
-
-
                                             icon="sap-icon://customer"
-                                            info="{
-                                                path: 'UserName'}"
+                                            info="{ path: 'UserName' }"
                                         />
                                     </items>
                                 </List>
                             </content>
+                          
                         </Panel>      
                     </content>
                     <footer>
-                        <Bar >
+                        <Bar id="Bar">
                             <contentLeft>
+                              <Button 
+                                    text="Atualizar"
+                                    icon="sap-icon://save"
+                                    type="Accept"
+                                    press="onPressUpdate"
+                                    enabled="{form>/isUpdate}"/>
+                                   
+
+
                                 <Button 
+                                    text="Inserir" 
+                                    enabled="{= ${form>/isUpdate} ? false : true }"
+                                    type="Accept"
+                                    press="onPressSave"/>
+                                 <!-- <Button 
                                     text="Salvar"
                                     icon="sap-icon://save"
                                     type="Accept"
-                                    press="onPressSave"/>
+                                    press="onPressSave"/>  -->
+
                             </contentLeft>
                             
                             <contentMiddle>
